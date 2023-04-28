@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cars Table</title>
+    <style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f7f7f7;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0; /* start with 0 opacity */
+  transition: all 0.3s ease-in-out;
+}
+
+table.fade-in {
+  opacity: 1; /* animate to 1 opacity */
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #4caf50;
+  color: white;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.05); /* add scale effect on hover */
+}
+
+/* add transition to hover effect */
+tr:hover {
+  transition: all 0.2s ease-in-out;
+}
+
+    </style>
+</head>
+<body>
+    <table id="carTable">
+        <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const carTable = document.getElementById("carTable");
+
+        async function fetchCars() {
+            const url = 'https://car-data.p.rapidapi.com/cars?limit=10&page=0';
+            const options = {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/octet-stream',
+                    'X-RapidAPI-Key': '7dc092b8d8mshcbfaccb5c82b9eap1fe7fdjsna2cb1a33dcb0',
+                    'X-RapidAPI-Host': 'car-data.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                const cars = await response.json();
+                cars.forEach(car => {
+                    const row = document.createElement("tr");
+                    const makeCell = document.createElement("td");
+                    makeCell.textContent = car.make;
+                    const modelCell = document.createElement("td");
+                    modelCell.textContent = car.model;
+                    const yearCell = document.createElement("td");
+                    yearCell.textContent = car.year;
+                    const categoryCell = document.createElement("td");
+                    row.appendChild(makeCell);
+                    row.appendChild(modelCell);
+                    row.appendChild(yearCell);
+                    carTable.tBodies[0].appendChild(row);
+                    // after appending rows to table
+                    carTable.classList.add("fade-in");
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchCars();
+    </script>
+</body>
+</html>
