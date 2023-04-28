@@ -72,6 +72,7 @@ tr:hover {
         const carTable = document.getElementById("carTable");
 
         async function fetchCars() {
+          // Third party API used to fetch car data from RAPIDAPI
             const url = 'https://car-data.p.rapidapi.com/cars?limit=10&page=0';
             const options = {
                 method: 'GET',
@@ -98,7 +99,6 @@ tr:hover {
                     row.appendChild(modelCell);
                     row.appendChild(yearCell);
                     carTable.tBodies[0].appendChild(row);
-                    // after appending rows to table
                     carTable.classList.add("fade-in");
                 });
             } catch (error) {
